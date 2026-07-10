@@ -5,18 +5,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // GSAP Animations
     gsap.registerPlugin(ScrollTrigger);
 
-    // Navbar scroll effect
-    window.addEventListener('scroll', () => {
-        const nav = document.getElementById('navbar');
-        const navContent = nav.querySelector('.max-w-[1400px]');
-        if (window.scrollY > 20) {
-            navContent.classList.add('shadow-2xl', 'bg-white/95', 'border-slate-100');
-            navContent.classList.remove('bg-white/80');
-        } else {
-            navContent.classList.remove('shadow-2xl', 'bg-white/95', 'border-slate-100');
-            navContent.classList.add('bg-white/80');
-        }
-    });
+    // Urgency countdown timer (resets to 4:00 on every page load)
+    const urgencyTimerEl = document.getElementById('urgencyTimer');
+    if (urgencyTimerEl) {
+        let secondsLeft = 4 * 60;
+        const tick = () => {
+            const m = Math.floor(secondsLeft / 60).toString().padStart(2, '0');
+            const s = (secondsLeft % 60).toString().padStart(2, '0');
+            urgencyTimerEl.textContent = `${m}:${s}`;
+            if (secondsLeft > 0) {
+                secondsLeft--;
+            } else {
+                clearInterval(timerInterval);
+            }
+        };
+        tick();
+        const timerInterval = setInterval(tick, 1000);
+    }
 
     // Accordion Logic
     window.toggleAccordion = function (button) {
